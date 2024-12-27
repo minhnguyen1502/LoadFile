@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">LoadFile</string>
+    <string name="confirm_delete">Confirm Delete</string>
+    <string name="drum_removal">Drum Removal</string>
+    <string name="cancel">Cancel</string>
+    <string name="confirm">Confirm</string>
+</resources>
