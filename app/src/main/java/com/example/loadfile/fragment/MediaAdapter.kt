@@ -7,30 +7,33 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.loadfile.R
+import com.example.loadfile.databinding.ItemAudioBinding
+import com.example.loadfile.databinding.ItemVideoBinding
 import com.example.loadfile.model.MediaItem
 
-class MediaAdapter(private val mediaList: List<MediaItem>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class MediaAdapter(private var mediaList: List<MediaItem>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     companion object {
         const val TYPE_AUDIO = 0
         const val TYPE_VIDEO = 1
     }
 
+
     override fun getItemViewType(position: Int): Int {
         return if (mediaList[position].isAudio) TYPE_AUDIO else TYPE_VIDEO
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        val layoutInflater = LayoutInflater.from(parent.context)
         return when (viewType) {
+
             TYPE_AUDIO -> {
-                val view = LayoutInflater.from(parent.context)
-                    .inflate(R.layout.item_audio, parent, false)
-                AudioViewHolder(view)
+                val binding = ItemAudioBinding.inflate(layoutInflater, parent, false)
+                AudioViewHolder(binding)
             }
             TYPE_VIDEO -> {
-                val view = LayoutInflater.from(parent.context)
-                    .inflate(R.layout.item_video, parent, false)
-                VideoViewHolder(view)
+                val binding = ItemVideoBinding.inflate(layoutInflater, parent, false)
+                VideoViewHolder(binding)
             }
             else -> throw IllegalArgumentException("Invalid view type")
         }
@@ -46,27 +49,31 @@ class MediaAdapter(private val mediaList: List<MediaItem>) : RecyclerView.Adapte
 
     override fun getItemCount(): Int = mediaList.size
 
-    class AudioViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val ivMedia: ImageView = itemView.findViewById(R.id.iv_media)
-        private val tvName: TextView = itemView.findViewById(R.id.tv_name)
-        private val tvSize: TextView = itemView.findViewById(R.id.tvSize)
-        private val tvDuration: TextView = itemView.findViewById(R.id.tvDuration)
 
-        fun bind(mediaItem: MediaItem) {
-            ivMedia.setImageResource(R.drawable.audio_file)
-            tvName.text = mediaItem.title
-            tvSize.text = "${mediaItem.size / (1024 * 1024)} MB"
-            tvDuration.text = "${mediaItem.duration / 1000}s"
+    inner class AudioViewHolder(private val binding: ItemAudioBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(audioItem: MediaItem) {
+            binding.tvName.text = audioItem.title
+            binding.tvSize.text = "${audioItem.size / 1024} KB"
+            binding.tvDuration.text = "${formatDuration(audioItem.duration)}"
         }
     }
 
-    class VideoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val tvName: TextView = itemView.findViewById(R.id.tvName)
-        private val tvDuration: TextView = itemView.findViewById(R.id.tvDuration)
+    inner class VideoViewHolder(private val binding: ItemVideoBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(videoItem: MediaItem) {
+            binding.tvName.text = videoItem.title
+            binding.tvDuration.text = "${formatDuration(videoItem.duration)}"
+        }
+    }
+    private fun formatDuration(durationMillis: Long): String {
+        val seconds = (durationMillis / 1000) % 60
+        val minutes = (durationMillis / (1000 * 60)) % 60
+        val hours = (durationMillis / (1000 * 60 * 60)) % 24
 
-        fun bind(mediaItem: MediaItem) {
-            tvName.text = mediaItem.title
-            tvDuration.text = "${mediaItem.duration / 1000}s"
+        return if (hours > 0) {
+            String.format("%02d:%02d:%02d", hours, minutes, seconds)
+        } else {
+            String.format("%02d:%02d", minutes, seconds)
         }
     }
 }
+

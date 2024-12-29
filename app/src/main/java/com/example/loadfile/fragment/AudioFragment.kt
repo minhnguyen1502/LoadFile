@@ -15,6 +15,8 @@ class AudioFragment : Fragment() {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: MediaAdapter
+    private var audioList = mutableListOf<MediaItem>()
+    private var filteredAudioList = mutableListOf<MediaItem>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -23,14 +25,17 @@ class AudioFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_audio, container, false)
         recyclerView = view.findViewById(R.id.recyclerView)
 
-        val audioList = fetchAudioFiles()
-        adapter = MediaAdapter(audioList)
+        audioList = fetchAudioFiles()
+        filteredAudioList.addAll(audioList)
+
+        adapter = MediaAdapter(filteredAudioList)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.adapter = adapter
+
         return view
     }
 
-    private fun fetchAudioFiles(): List<MediaItem> {
+    private fun fetchAudioFiles(): MutableList<MediaItem> {
         val audioList = mutableListOf<MediaItem>()
         val uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
         val projection = arrayOf(
@@ -54,5 +59,15 @@ class AudioFragment : Fragment() {
         }
         return audioList
     }
-}
 
+    fun filterAudioList(query: String) {
+        filteredAudioList.clear()
+        if (query.isEmpty()) {
+            filteredAudioList.addAll(audioList)
+        } else {
+            filteredAudioList.addAll(audioList.filter { it.title.contains(query, ignoreCase = true) })
+        }
+        adapter.notifyDataSetChanged()
+    }
+
+}

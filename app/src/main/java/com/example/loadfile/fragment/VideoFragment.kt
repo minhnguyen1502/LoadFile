@@ -15,6 +15,8 @@ class VideoFragment : Fragment() {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: MediaAdapter
+    private var videoList = mutableListOf<MediaItem>()
+    private var filteredVideoList = mutableListOf<MediaItem>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -23,14 +25,17 @@ class VideoFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_video, container, false)
         recyclerView = view.findViewById(R.id.recyclerView)
 
-        val videoList = fetchVideoFiles()
-        adapter = MediaAdapter(videoList)
+        videoList = fetchVideoFiles()
+        filteredVideoList.addAll(videoList)
+
+        adapter = MediaAdapter(filteredVideoList)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.adapter = adapter
+
         return view
     }
 
-    private fun fetchVideoFiles(): List<MediaItem> {
+    private fun fetchVideoFiles(): MutableList<MediaItem> {
         val videoList = mutableListOf<MediaItem>()
         val uri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI
         val projection = arrayOf(
@@ -54,4 +59,15 @@ class VideoFragment : Fragment() {
         }
         return videoList
     }
+
+    fun filterVideoList(query: String) {
+        filteredVideoList.clear()
+        if (query.isEmpty()) {
+            filteredVideoList.addAll(videoList)
+        } else {
+            filteredVideoList.addAll(videoList.filter { it.title.contains(query, ignoreCase = true) })
+        }
+        adapter.notifyDataSetChanged()
+    }
+
 }
