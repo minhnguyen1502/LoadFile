@@ -1,8 +1,10 @@
-package com.example.loadfile.fragment
+package com.example.loadfile.adapter
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.example.loadfile.fragment.AudioFragment
+import com.example.loadfile.fragment.VideoFragment
 
 class ViewPagerAdapter(fragmentActivity: FragmentActivity) : FragmentStateAdapter(fragmentActivity) {
     private val fragments = listOf(

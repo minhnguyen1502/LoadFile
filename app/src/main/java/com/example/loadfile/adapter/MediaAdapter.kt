@@ -1,12 +1,8 @@
-package com.example.loadfile.fragment
+package com.example.loadfile.adapter
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.loadfile.R
 import com.example.loadfile.databinding.ItemAudioBinding
 import com.example.loadfile.databinding.ItemVideoBinding
 import com.example.loadfile.model.MediaItem

@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.loadfile.R
+import com.example.loadfile.adapter.MediaAdapter
 import com.example.loadfile.model.MediaItem
 
 class AudioFragment : Fragment() {
@@ -36,7 +37,6 @@ class AudioFragment : Fragment() {
     }
 
     private fun fetchAudioFiles(): MutableList<MediaItem> {
-        val audioList = mutableListOf<MediaItem>()
         val uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
         val projection = arrayOf(
             MediaStore.Audio.Media.TITLE,

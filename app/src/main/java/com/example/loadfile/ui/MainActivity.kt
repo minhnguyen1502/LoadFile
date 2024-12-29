@@ -1,4 +1,4 @@
-package com.example.loadfile
+package com.example.loadfile.ui
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -19,7 +19,7 @@ import com.example.loadfile.databinding.DialogOptionBinding
 import com.example.loadfile.databinding.DialogRenameBinding
 import com.example.loadfile.fragment.AudioFragment
 import com.example.loadfile.fragment.VideoFragment
-import com.example.loadfile.fragment.ViewPagerAdapter
+import com.example.loadfile.adapter.ViewPagerAdapter
 import com.example.loadfile.model.MediaItem
 import com.example.orderfood.base.BaseActivity
 import com.google.android.material.bottomsheet.BottomSheetDialog

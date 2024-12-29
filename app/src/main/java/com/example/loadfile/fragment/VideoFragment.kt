@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.loadfile.R
+import com.example.loadfile.adapter.MediaAdapter
 import com.example.loadfile.model.MediaItem
 
 class VideoFragment : Fragment() {
@@ -36,7 +37,6 @@ class VideoFragment : Fragment() {
     }
 
     private fun fetchVideoFiles(): MutableList<MediaItem> {
-        val videoList = mutableListOf<MediaItem>()
         val uri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI
         val projection = arrayOf(
             MediaStore.Video.Media.TITLE,
